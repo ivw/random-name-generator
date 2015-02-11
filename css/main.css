@@ -1,0 +1,38 @@
+.word-list-item {
+	border-top: 1px solid #e0e0e0;
+	font-size: large;
+	padding: 5px 5px 5px 40%;
+}
+
+.word-generator-config .form-group {
+	padding: 4px;
+}
+
+.word-generator-config label {
+	margin-right: 4px;
+}
+
+.word-generator-config .input-tiny {
+	width: 60px;
+}
+
+.word-generator-config .input-medium {
+	width: 150px;
+}
+
+.back-to-top-button {
+	display: inline-block;
+
+	height: 40px;
+	width: 40px;
+
+	position: fixed;
+	bottom: 40px;
+	right: 20px;
+
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+	overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+	background: rgba(150, 150, 150, 0.8) url(../img/cd-top-arrow.svg) no-repeat center 50%;
+}
