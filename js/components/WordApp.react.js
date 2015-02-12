@@ -2,6 +2,7 @@ var React = require('react');
 var InfiniteWordList = require('./InfiniteWordList.react');
 var WordGeneratorConfig = require('./WordGeneratorConfig.react');
 var BackToTop = require('./BackToTop.react');
+var SiteTop = require('./SiteTop.react');
 var ReactLoader = require('react-loader');
 var WordGeneratorStore = require('../stores/WordGeneratorStore');
 
@@ -27,6 +28,7 @@ var WordApp = React.createClass({
 	render: function () {
 		return (
 			<div>
+				<SiteTop />
 				<div className="container">
 					<div className="row">
 						<div className="col-md-12">
