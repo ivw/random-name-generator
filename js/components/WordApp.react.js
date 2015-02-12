@@ -1,4 +1,5 @@
 var React = require('react');
+var SavedWordList = require('./SavedWordList.react');
 var InfiniteWordList = require('./InfiniteWordList.react');
 var WordGeneratorConfig = require('./WordGeneratorConfig.react');
 var BackToTop = require('./BackToTop.react');
@@ -29,19 +30,31 @@ var WordApp = React.createClass({
 		return (
 			<div>
 				<SiteTop />
+
 				<div className="container">
+
+					<div className="row">
+						<div className="col-md-12">
+							<SavedWordList />
+						</div>
+					</div>
+
 					<div className="row">
 						<div className="col-md-12">
 							<WordGeneratorConfig />
 						</div>
 					</div>
+
 					<div className="row">
 						<div className="col-md-12">
 							<InfiniteWordList />
 						</div>
 					</div>
+
 				</div>
+
 				<BackToTop />
+
 				<ReactLoader loaded={!this.state.isLoading} />
 
 			</div>

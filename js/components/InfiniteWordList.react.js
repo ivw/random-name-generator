@@ -2,6 +2,7 @@ var React = require('react');
 var InfiniteScroll = require('react-infinite-scroll')(React);
 var WordListItem = require('./WordListItem.react.js');
 var GeneratedWordStore = require('../stores/GeneratedWordStore');
+var SavedWordStore = require('../stores/SavedWordStore');
 var WordGeneratorStore = require('../stores/WordGeneratorStore');
 var _ = require('lodash');
 
@@ -28,7 +29,7 @@ function getState() {
 function getWordListItem(word) {
 	return (
 		<WordListItem
-			key={_.uniqueId()}
+			key={word}
 			word={word}
 		/>
 	);
@@ -43,9 +44,11 @@ var InfiniteWordList = React.createClass({
 	},
 	componentDidMount: function () {
 		GeneratedWordStore.addChangeListener(this._onChange);
+		SavedWordStore.addChangeListener(this._onChange);
 	},
 	componentWillUnmount: function () {
 		GeneratedWordStore.removeChangeListener(this._onChange);
+		SavedWordStore.removeChangeListener(this._onChange);
 	},
 	loadMore: function () {
 		console.log('loadMore');
