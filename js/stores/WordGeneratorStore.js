@@ -6,7 +6,7 @@ var defaultConfig = {
 	wordStartsWith: null,
 	chainOrder: 3,
 	minWordLength: 4,
-	maxWordLength: 6
+	maxWordLength: 7
 };
 
 // We save the loader so we can use its updateFromConfig method which can reuse its subcomponents if their config is the same.
