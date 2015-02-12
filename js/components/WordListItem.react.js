@@ -27,11 +27,14 @@ var InfiniteWordListItem = React.createClass({
 		);
 	},
 	render: function () {
-		var saveButton = null;
+		var googleLink = "https://www.google.nl/search?q=" + encodeURIComponent(this.props.word);
 		return (
 			<div className="word-list-item">
 				{this.props.word}
 				{this.renderSaveButton()}
+				<a href={googleLink} target="_blank">
+					<i className="fa fa-google"></i>
+				</a>
 			</div>
 		);
 	}
