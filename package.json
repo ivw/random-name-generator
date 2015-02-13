@@ -6,7 +6,7 @@
   "dependencies": {
     "events": "^1.0.2",
     "foswig": "^1.0.2",
-    "lodash": "^3.1.0",
+    "lodash": "^3.2.0",
     "promise": "^6.1.0",
     "react": "^0.12.2",
     "react-bootstrap": "^0.14.0",
