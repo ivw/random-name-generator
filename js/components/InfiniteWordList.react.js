@@ -8,16 +8,7 @@ var WordGeneratorStore = require('../stores/WordGeneratorStore');
 function loadMore() {
 	console.log('loadMore');
 
-	var wordGenerator = WordGeneratorStore.getWordGenerator();
-	if (wordGenerator) {
-		GeneratedWordStore.addArray(wordGenerator.generateWords(25));
-	}
-}
-
-function getState() {
-	return {
-		items: GeneratedWordStore.getAll()
-	};
+	GeneratedWordStore.addArray(WordGeneratorStore.getWordGenerator().generateWords(25));
 }
 
 function getWordListItem(word) {
@@ -31,18 +22,30 @@ function getWordListItem(word) {
 
 var InfiniteWordList = React.createClass({
 	getInitialState: function () {
-		return getState();
+		return {
+			items: GeneratedWordStore.getAll(),
+			hasMore: !!WordGeneratorStore.getWordGenerator()
+		};
 	},
-	_onChange: function () {
-		this.setState(getState());
+	_onWordsChange: function () {
+		this.setState({
+			items: GeneratedWordStore.getAll()
+		});
+	},
+	_onWordGeneratorChange: function () {
+		this.setState({
+			hasMore: !!WordGeneratorStore.getWordGenerator()
+		});
 	},
 	componentDidMount: function () {
-		GeneratedWordStore.addChangeListener(this._onChange);
-		SavedWordStore.addChangeListener(this._onChange);
+		GeneratedWordStore.addChangeListener(this._onWordsChange);
+		SavedWordStore.addChangeListener(this._onWordsChange);
+		WordGeneratorStore.addWordGeneratorChangeListener(this._onWordGeneratorChange);
 	},
 	componentWillUnmount: function () {
-		GeneratedWordStore.removeChangeListener(this._onChange);
-		SavedWordStore.removeChangeListener(this._onChange);
+		GeneratedWordStore.removeChangeListener(this._onWordsChange);
+		SavedWordStore.removeChangeListener(this._onWordsChange);
+		WordGeneratorStore.removeWordGeneratorChangeListener(this._onWordGeneratorChange);
 	},
 	render: function () {
 		return (
@@ -50,7 +53,7 @@ var InfiniteWordList = React.createClass({
 				<InfiniteScroll
 					pageStart={0}
 					loadMore={loadMore}
-					hasMore={true}
+					hasMore={this.state.hasMore}
 				>{this.state.items.map(getWordListItem)}</InfiniteScroll>
 			</div>
 		);

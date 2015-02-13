@@ -25,8 +25,6 @@ function updateConfig(newConfig) {
 	var newWordGeneratorLoader = wordGeneratorLoader ? wordGeneratorLoader.updateFromConfig(newConfig) : WordGeneratorLoader.fromConfig(newConfig);
 	if (newWordGeneratorLoader == wordGeneratorLoader) {
 		return new Promise(function (resolve, reject) {
-			emitWordGeneratorChange();
-
 			resolve(wordGenerator);
 		});
 	}
@@ -54,7 +52,7 @@ function updateConfig(newConfig) {
 
 module.exports.init = function () {
 	//TODO config localStorage
-	updateConfig(_.assign({}, defaultConfig));
+	return updateConfig(_.assign({}, defaultConfig));
 };
 
 module.exports.updateConfig = updateConfig;

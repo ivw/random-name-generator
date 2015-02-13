@@ -1,6 +1,7 @@
 var React = require('react');
 var WordGeneratorStore = require('../stores/WordGeneratorStore');
 var _ = require('lodash');
+var GeneratedWordStore = require('../stores/GeneratedWordStore');
 
 
 var WordGeneratorConfig = React.createClass({
@@ -68,13 +69,20 @@ var WordGeneratorConfig = React.createClass({
 
 		try {
 			WordGeneratorStore.updateConfig(this.state.config)
+				.then(function (wordGenerator) {
+					GeneratedWordStore.clear();
+				})
 				.catch(function (error) {
 					// something went wrong while loading the new word generator
+
+					console.warn(error);
 
 					alert(error);
 				});
 		} catch (error) {
 			// something wrong with the given config
+
+			console.warn(error);
 
 			alert(error);
 		}
