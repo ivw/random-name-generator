@@ -1,4 +1,4 @@
-var WordGeneratorLoader = require('../library/WordGeneratorLoader');
+var WordGeneratorLoader = require('../utils/WordGeneratorLoader');
 var _ = require('lodash');
 
 var defaultConfig = {
