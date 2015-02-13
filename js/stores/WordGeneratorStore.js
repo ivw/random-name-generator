@@ -24,26 +24,30 @@ function updateConfig(newConfig) {
 
 	var newWordGeneratorLoader = wordGeneratorLoader ? wordGeneratorLoader.updateFromConfig(newConfig) : WordGeneratorLoader.fromConfig(newConfig);
 	if (newWordGeneratorLoader == wordGeneratorLoader) {
-		return;
+		return new Promise(function (resolve, reject) {
+			emitWordGeneratorChange();
+
+			resolve(wordGenerator);
+		});
 	}
 
 	isLoading = true;
 	emitLoadChange();
 
-	newWordGeneratorLoader.load()
+	return newWordGeneratorLoader.load()
 		.then(function (newWordGenerator) {
-			wordGeneratorLoader = newWordGeneratorLoader;
+			isLoading = false;
+			emitLoadChange();
 
+			wordGeneratorLoader = newWordGeneratorLoader;
 			wordGenerator = newWordGenerator;
 			emitWordGeneratorChange();
 		})
 		.catch(function (error) {
-			console.warn(error);
-			alert(error);
-		})
-		.then(function () {
 			isLoading = false;
 			emitLoadChange();
+
+			throw error;
 		});
 }
 

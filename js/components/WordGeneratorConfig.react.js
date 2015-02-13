@@ -67,9 +67,15 @@ var WordGeneratorConfig = React.createClass({
 		e.preventDefault();
 
 		try {
-			WordGeneratorStore.updateConfig(this.state.config);
+			WordGeneratorStore.updateConfig(this.state.config)
+				.catch(function (error) {
+					// something went wrong while loading the new word generator
+
+					alert(error);
+				});
 		} catch (error) {
-			console.warn(error);
+			// something wrong with the given config
+
 			alert(error);
 		}
 	},

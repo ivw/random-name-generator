@@ -4,16 +4,10 @@ var WordListItem = require('./WordListItem.react.js');
 var GeneratedWordStore = require('../stores/GeneratedWordStore');
 var SavedWordStore = require('../stores/SavedWordStore');
 var WordGeneratorStore = require('../stores/WordGeneratorStore');
-var _ = require('lodash');
 
-WordGeneratorStore.init();
-WordGeneratorStore.addWordGeneratorChangeListener(function () {
-	console.log('Clearing and adding new words to store');
-	GeneratedWordStore.clear();
-	generateWords();
-});
+function loadMore() {
+	console.log('loadMore');
 
-function generateWords() {
 	var wordGenerator = WordGeneratorStore.getWordGenerator();
 	if (wordGenerator) {
 		GeneratedWordStore.addArray(wordGenerator.generateWords(25));
@@ -50,17 +44,12 @@ var InfiniteWordList = React.createClass({
 		GeneratedWordStore.removeChangeListener(this._onChange);
 		SavedWordStore.removeChangeListener(this._onChange);
 	},
-	loadMore: function () {
-		console.log('loadMore');
-
-		generateWords();
-	},
 	render: function () {
 		return (
 			<div className="word-list">
 				<InfiniteScroll
 					pageStart={0}
-					loadMore={this.loadMore}
+					loadMore={loadMore}
 					hasMore={true}
 				>{this.state.items.map(getWordListItem)}</InfiniteScroll>
 			</div>
