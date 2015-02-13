@@ -87,7 +87,16 @@ var WordGeneratorConfig = React.createClass({
 			alert(error);
 		}
 	},
+	handleCancel: function (e) {
+		e.preventDefault();
+
+		this.setState({
+			config: WordGeneratorStore.getConfig()
+		});
+	},
 	render: function () {
+		var isConfigUnchanged = _.isEqual(this.state.config, WordGeneratorStore.getConfig());
+
 		return (
 			<div className="word-generator-config">
 				<form className="form-inline" onSubmit={this.handleSubmit}>
@@ -128,6 +137,7 @@ var WordGeneratorConfig = React.createClass({
 
 					<div className="form-group">
 						<button type="submit" className="btn btn-default">Update</button>
+						<button type="button" className="btn btn-default" onClick={this.handleCancel} disabled={isConfigUnchanged}>Cancel</button>
 					</div>
 				</form>
 			</div>
