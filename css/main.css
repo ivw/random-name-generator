@@ -27,14 +27,11 @@
 
 .back-to-top-button {
 	display: inline-block;
-
-	height: 40px;
-	width: 40px;
-
 	position: fixed;
 	bottom: 40px;
 	right: 20px;
-
+	height: 40px;
+	width: 40px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 	overflow: hidden;
 	text-indent: 100%;
