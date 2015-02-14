@@ -6,7 +6,7 @@
 
 .word-list-item a {
 	float: right;
-	margin-left: 6px;
+	margin-left: 10px;
 }
 
 .word-generator-config .form-group {
