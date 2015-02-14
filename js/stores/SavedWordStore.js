@@ -1,4 +1,13 @@
-var words = [];
+var ls = require('easy-localstorage');
+
+var words;
+
+init();
+
+function init() {
+	var savedWords = ls.get('saved-words');
+	words = savedWords ? savedWords : [];
+}
 
 function add(word) {
 	var i = words.indexOf(word);
@@ -16,6 +25,15 @@ function remove(word) {
 	words.splice(i, 1);
 }
 
+function onChange() {
+	saveToLocalStorage();
+	emitChange();
+}
+
+function saveToLocalStorage() {
+	ls.set('saved-words', words);
+}
+
 module.exports.getAll = function () {
 	return words;
 };
@@ -26,22 +44,22 @@ module.exports.has = function (word) {
 
 module.exports.add = function (word) {
 	add(word);
-	emitChange();
+	onChange();
 };
 
 module.exports.addArray = function (wordArray) {
 	wordArray.forEach(add);
-	emitChange();
+	onChange();
 };
 
 module.exports.remove = function (word) {
 	remove(word);
-	emitChange();
+	onChange();
 };
 
 module.exports.clear = function () {
 	words = [];
-	emitChange();
+	onChange();
 };
 
 

@@ -4,6 +4,7 @@
   "author": "ivw",
   "main": "js/app.js",
   "dependencies": {
+    "easy-localstorage": "^0.1.0",
     "events": "^1.0.2",
     "foswig": "^1.0.2",
     "lodash": "^3.2.0",
