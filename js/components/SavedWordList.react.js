@@ -33,9 +33,23 @@ var SavedWordList = React.createClass({
 		SavedWordStore.removeChangeListener(this._onChange);
 	},
 	render: function () {
+		if (this.state.items.length <= 0) {
+			return null;
+		}
 		return (
-			<div className="word-list">
-				{this.state.items.map(getSavedWordListItem)}
+			<div>
+				<div className="row">
+					<div className="col-md-12">
+						<div className="word-list">
+							<div className="page-header">
+								<h3>Saved names</h3>
+							</div>
+							{this.state.items.map(getSavedWordListItem)}
+						</div>
+					</div>
+				</div>
+				<div className="page-header">
+				</div>
 			</div>
 		);
 	}

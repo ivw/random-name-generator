@@ -1,5 +1,9 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
 body {
 	background: url(../img/crossword.png) repeat;
+
+	font-family: 'Open Sans', sans-serif;
 }
 
 .word-list {
@@ -8,11 +12,19 @@ body {
 	background-color: rgba(255, 255, 255, 0.35);
 }
 
+.page-header {
+	margin-top: 20px;
+}
+
 .word-list-item {
-	border-top: 1px solid #ebebeb;
+	border-bottom: 1px solid #ebebeb;
 	font-size: large;
-	padding: 5px 0 5px 35%;
+	padding: 5px 10px;
 	margin: 0 10px;
+}
+
+.word-list-item:last-child {
+	border-bottom: none;
 }
 
 .word-list-item a {
@@ -20,11 +32,19 @@ body {
 	margin-left: 10px;
 }
 
+.navbar-brand .fa {
+	margin-left: 10px;
+}
+
+.word-generator-config {
+	padding-bottom: 16px;
+}
+
 .word-generator-config .form-group {
 	padding: 4px;
 }
 
-.word-generator-config label {
+.word-generator-config label, button {
 	margin-right: 4px;
 }
 

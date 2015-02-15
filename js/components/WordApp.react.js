@@ -33,23 +33,11 @@ var WordApp = React.createClass({
 
 				<div className="container">
 
-					<div className="row">
-						<div className="col-md-12">
-							<SavedWordList />
-						</div>
-					</div>
+					<SavedWordList />
 
-					<div className="row">
-						<div className="col-md-12">
-							<WordGeneratorConfig />
-						</div>
-					</div>
+					<WordGeneratorConfig />
 
-					<div className="row">
-						<div className="col-md-12">
-							<InfiniteWordList />
-						</div>
-					</div>
+					<InfiniteWordList />
 
 				</div>
 

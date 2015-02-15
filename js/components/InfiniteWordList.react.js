@@ -49,12 +49,16 @@ var InfiniteWordList = React.createClass({
 	},
 	render: function () {
 		return (
-			<div className="word-list">
-				<InfiniteScroll
-					pageStart={0}
-					loadMore={loadMore}
-					hasMore={this.state.hasMore}
-				>{this.state.items.map(getWordListItem)}</InfiniteScroll>
+			<div className="row">
+				<div className="col-md-12">
+					<div className="word-list">
+						<InfiniteScroll
+							pageStart={0}
+							loadMore={loadMore}
+							hasMore={this.state.hasMore}
+						>{this.state.items.map(getWordListItem)}</InfiniteScroll>
+					</div>
+				</div>
 			</div>
 		);
 	}

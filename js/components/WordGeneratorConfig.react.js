@@ -98,55 +98,57 @@ var WordGeneratorConfig = React.createClass({
 		var isConfigUnchanged = _.isEqual(this.state.config, WordGeneratorStore.getConfig());
 
 		return (
-			<div className="word-generator-config">
-				<form className="form-inline" onSubmit={this.handleSubmit}>
-					<div className="form-group">
-						<label>Source words:</label>
-						<select className="form-control" value={this.state.config ? this.state.config.sourceWordsUrl : null} onChange={this.handleChangeSourceWordsUrl}>
-							<option value="/wordlists/wordsEnglish.txt">English</option>
-							<option value="/wordlists/wordsSpanish.txt">Spanish</option>
-							<option value="/wordlists/wordsFrench.txt">French</option>
-							<option value="/wordlists/wordsGerman.txt">German</option>
-							<option value="/wordlists/wordsItalian.txt">Italian</option>
-							<option value="/wordlists/wordsDutch.txt">Dutch</option>
-							<option value="/wordlists/wordsLatin.txt">Latin</option>
-						</select>
+			<div className="row">
+				<div className="col-md-12">
+					<div className="word-generator-config">
+						<form className="form-inline" onSubmit={this.handleSubmit}>
+							<div className="form-group">
+								<label>Source words:</label>
+								<select className="form-control" value={this.state.config ? this.state.config.sourceWordsUrl : null} onChange={this.handleChangeSourceWordsUrl}>
+									<option value="/wordlists/wordsEnglish.txt">English</option>
+									<option value="/wordlists/wordsSpanish.txt">Spanish</option>
+									<option value="/wordlists/wordsFrench.txt">French</option>
+									<option value="/wordlists/wordsGerman.txt">German</option>
+									<option value="/wordlists/wordsItalian.txt">Italian</option>
+									<option value="/wordlists/wordsDutch.txt">Dutch</option>
+									<option value="/wordlists/wordsLatin.txt">Latin</option>
+								</select>
+							</div>
+
+							<div className="form-group">
+								<label>Starts with:</label>
+								<input type="text" className="form-control input-tiny" size="2" value={this.state.config ? this.state.config.wordStartsWith : null} onChange={this.handleChangeWordStartsWith} />
+							</div>
+
+							<div className="form-group">
+								<label>Randomness:</label>
+								<select className="form-control" value={this.state.config ? this.state.config.chainOrder : null} onChange={this.handleChangeChainOrder}>
+									<option value="1">1 (more random)</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4 (more like normal words)</option>
+								</select>
+							</div>
+
+							<div className="form-group">
+								<label>Length:</label>
+
+								<div className="input-group input-medium">
+									<input type="number" className="form-control" min="1" max="50" value={this.state.config ? this.state.config.minWordLength : null} onChange={this.handleChangeMinWordLength} />
+
+									<div className="input-group-addon">-</div>
+
+									<input type="number" className="form-control" min="1" max="50" value={this.state.config ? this.state.config.maxWordLength : null} onChange={this.handleChangeMaxWordLength} />
+								</div>
+							</div>
+
+							<div className="form-group">
+								<button type="submit" className="btn btn-default">Update</button>
+								<button type="button" className="btn btn-default" onClick={this.handleCancel} disabled={isConfigUnchanged}>Cancel</button>
+							</div>
+						</form>
 					</div>
-
-					<div className="form-group">
-						<label>Starts with:</label>
-						<input type="text" className="form-control input-tiny" size="2" value={this.state.config ? this.state.config.wordStartsWith : null} onChange={this.handleChangeWordStartsWith} />
-					</div>
-
-					<div className="form-group">
-						<label>Randomness:</label>
-						<select className="form-control" value={this.state.config ? this.state.config.chainOrder : null} onChange={this.handleChangeChainOrder}>
-							<option value="1">1 (more random)</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4 (more like normal words)</option>
-						</select>
-					</div>
-
-					<div className="form-group">
-						<label>Length:</label>
-
-						<div className="input-group input-medium">
-							<input type="number" className="form-control" min="1" max="50" value={this.state.config ? this.state.config.minWordLength : null} onChange={this.handleChangeMinWordLength} />
-
-							<div className="input-group-addon">-</div>
-
-							<input type="number" className="form-control" min="1" max="50" value={this.state.config ? this.state.config.maxWordLength : null} onChange={this.handleChangeMaxWordLength} />
-						</div>
-					</div>
-
-					<div className="form-group">
-						<button type="submit" className="btn btn-default">Update</button>
-					</div>
-					<div className="form-group">
-						<button type="button" className="btn btn-default" onClick={this.handleCancel} disabled={isConfigUnchanged}>Cancel</button>
-					</div>
-				</form>
+				</div>
 			</div>
 		);
 	}
