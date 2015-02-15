@@ -103,8 +103,13 @@ var WordGeneratorConfig = React.createClass({
 					<div className="form-group">
 						<label>Source words:</label>
 						<select className="form-control" value={this.state.config ? this.state.config.sourceWordsUrl : null} onChange={this.handleChangeSourceWordsUrl}>
-							<option value="/wordlists/wordsEn.txt">English</option>
-							<option value="/wordlists/wordsNl.txt">Dutch</option>
+							<option value="/wordlists/wordsEnglish.txt">English</option>
+							<option value="/wordlists/wordsSpanish.txt">Spanish</option>
+							<option value="/wordlists/wordsFrench.txt">French</option>
+							<option value="/wordlists/wordsGerman.txt">German</option>
+							<option value="/wordlists/wordsItalian.txt">Italian</option>
+							<option value="/wordlists/wordsDutch.txt">Dutch</option>
+							<option value="/wordlists/wordsLatin.txt">Latin</option>
 						</select>
 					</div>
 

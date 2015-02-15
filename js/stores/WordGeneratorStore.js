@@ -2,7 +2,7 @@ var WordGeneratorLoader = require('../utils/WordGeneratorLoader');
 var _ = require('lodash');
 
 var defaultConfig = {
-	sourceWordsUrl: '/wordlists/wordsEn.txt',
+	sourceWordsUrl: '/wordlists/wordsEnglish.txt',
 	wordStartsWith: null,
 	chainOrder: 3,
 	minWordLength: 4,
