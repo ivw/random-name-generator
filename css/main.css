@@ -69,3 +69,13 @@ body {
 	white-space: nowrap;
 	background: rgba(150, 150, 150, 0.8) url(../img/cd-top-arrow.svg) no-repeat center 50%;
 }
+
+.loader {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 0.4);
+	z-index: 9999;
+}
