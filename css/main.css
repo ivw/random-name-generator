@@ -1,7 +1,18 @@
+body {
+	background: url(../img/crossword.png) repeat;
+}
+
+.word-list {
+	max-width: 320px;
+	margin: 0 auto;
+	background-color: rgba(255, 255, 255, 0.35);
+}
+
 .word-list-item {
-	border-top: 1px solid #e0e0e0;
+	border-top: 1px solid #ebebeb;
 	font-size: large;
-	padding: 5px 5px 5px 40%;
+	padding: 5px 0 5px 35%;
+	margin: 0 10px;
 }
 
 .word-list-item a {

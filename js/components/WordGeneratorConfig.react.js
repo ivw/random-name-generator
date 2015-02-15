@@ -114,12 +114,12 @@ var WordGeneratorConfig = React.createClass({
 					</div>
 
 					<div className="form-group">
-						<label>Word starts with:</label>
+						<label>Starts with:</label>
 						<input type="text" className="form-control input-tiny" size="2" value={this.state.config ? this.state.config.wordStartsWith : null} onChange={this.handleChangeWordStartsWith} />
 					</div>
 
 					<div className="form-group">
-						<label>Word randomness:</label>
+						<label>Randomness:</label>
 						<select className="form-control" value={this.state.config ? this.state.config.chainOrder : null} onChange={this.handleChangeChainOrder}>
 							<option value="1">1 (more random)</option>
 							<option value="2">2</option>
@@ -129,7 +129,7 @@ var WordGeneratorConfig = React.createClass({
 					</div>
 
 					<div className="form-group">
-						<label>Word length:</label>
+						<label>Length:</label>
 
 						<div className="input-group input-medium">
 							<input type="number" className="form-control" min="1" max="50" value={this.state.config ? this.state.config.minWordLength : null} onChange={this.handleChangeMinWordLength} />
@@ -142,6 +142,8 @@ var WordGeneratorConfig = React.createClass({
 
 					<div className="form-group">
 						<button type="submit" className="btn btn-default">Update</button>
+					</div>
+					<div className="form-group">
 						<button type="button" className="btn btn-default" onClick={this.handleCancel} disabled={isConfigUnchanged}>Cancel</button>
 					</div>
 				</form>
