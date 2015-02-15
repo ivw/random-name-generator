@@ -18,4 +18,8 @@ To build the project, first run this command:
 
     npm start
 
-This will perform an initial build and start a watcher process that will update build.js with any changes you wish to make. This watcher is based on [Browserify](http://browserify.org/) and [Watchify](https://github.com/substack/watchify), and it transforms React's JSX syntax into standard JavaScript with [Reactify](https://github.com/andreypopp/reactify).
+This will perform an initial build and start a watcher process that will update build.js with any changes you wish to make.
+
+To build for production, use this command:
+
+    npm run build
