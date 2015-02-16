@@ -3,7 +3,7 @@ var request = require('superagent');
 
 function fixAbsoluteLocalUrl(url) {
 	if (url.substr(0, 1) == '/') {
-		return window.location.pathname + url.substr(1);
+		return location.pathname.substring(0, location.pathname.lastIndexOf('/')) + url;
 	}
 	return url;
 }
