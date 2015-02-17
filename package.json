@@ -10,7 +10,7 @@
     "lodash": "^3.2.0",
     "promise": "^6.1.0",
     "react": "^0.12.2",
-    "react-bootstrap": "^0.14.0",
+    "react-bootstrap": "^0.15.1",
     "react-infinite-scroll": "^0.1.5",
     "react-loader": "^1.1.0",
     "superagent": "^0.21.0"
