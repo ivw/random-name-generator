@@ -60,6 +60,7 @@ var InfiniteWordList = React.createClass({
 							pageStart={0}
 							loadMore={loadMore}
 							hasMore={this.state.hasMore}
+							loader={<div className="infinite-list-end"><em>Can't generate any more words with the current settings</em></div>}
 						>{this.state.items.map(getWordListItem)}</InfiniteScroll>
 					</div>
 				</div>
