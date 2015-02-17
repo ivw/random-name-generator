@@ -3,17 +3,19 @@ var words = [];
 function add(word) {
 	var i = words.indexOf(word);
 	if (i >= 0) {
-		return;
+		return false;
 	}
 	words.push(word);
+	return true;
 }
 
 function remove(word) {
 	var i = words.indexOf(word);
 	if (i < 0) {
-		return;
+		return false;
 	}
 	words.splice(i, 1);
+	return true;
 }
 
 module.exports.getAll = function () {
@@ -25,21 +27,29 @@ module.exports.has = function (word) {
 };
 
 module.exports.add = function (word) {
-	add(word);
-	emitChange();
+	if (add(word)) {
+		emitChange();
+	}
 };
 
 module.exports.addArray = function (wordArray) {
+	var sizeBefore = words.length;
 	wordArray.forEach(add);
-	emitChange();
+	if (words.length != sizeBefore) {
+		emitChange();
+	}
 };
 
 module.exports.remove = function (word) {
-	remove(word);
-	emitChange();
+	if (remove(word)) {
+		emitChange();
+	}
 };
 
 module.exports.clear = function () {
+	if (words.length <= 0) {
+		return;
+	}
 	words = [];
 	emitChange();
 };

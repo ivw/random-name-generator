@@ -11,7 +11,11 @@ WordGenerator.prototype.generateWord = function () {
 WordGenerator.prototype.generateWords = function (count) {
 	var generatedWords = [];
 	for (var i = 0; i < count; i++) {
-		generatedWords.push(this.wordChain.generateWord(this.minWordLength, this.maxWordLength, false));
+		var generatedWord = this.wordChain.generateWord(this.minWordLength, this.maxWordLength, false);
+		if (!generatedWord) {
+			continue;
+		}
+		generatedWords.push(generatedWord);
 	}
 	return generatedWords;
 };

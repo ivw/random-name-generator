@@ -8,7 +8,11 @@ var WordGeneratorStore = require('../stores/WordGeneratorStore');
 function loadMore() {
 	console.log('loadMore');
 
-	GeneratedWordStore.addArray(WordGeneratorStore.getWordGenerator().generateWords(25));
+	var generatedWords = WordGeneratorStore.getWordGenerator().generateWords(25);
+	if (generatedWords.length <= 0) {
+		return;
+	}
+	GeneratedWordStore.addArray(generatedWords);
 }
 
 function getWordListItem(word) {
