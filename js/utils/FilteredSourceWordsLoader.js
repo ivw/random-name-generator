@@ -24,9 +24,7 @@ FilteredSourceWordsLoader.prototype.updateFromConfig = function (config) {
 FilteredSourceWordsLoader.prototype.load = function () {
 	var self = this;
 	if (this.filteredSourceWords) {
-		return new Promise(function (resolve, reject) {
-			resolve(self.filteredSourceWords);
-		});
+		return Promise.resolve(self.filteredSourceWords);
 	}
 	return this.sourceWordsLoader.load()
 		.then(function (sourceWords) {

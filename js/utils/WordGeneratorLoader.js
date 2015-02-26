@@ -32,9 +32,7 @@ WordGeneratorLoader.prototype.updateFromConfig = function (config) {
 WordGeneratorLoader.prototype.load = function () {
 	var self = this;
 	if (this.wordGenerator) {
-		return new Promise(function (resolve, reject) {
-			resolve(self.wordGenerator);
-		});
+		return Promise.resolve(self.wordGenerator);
 	}
 	return this.wordChainLoader.load()
 		.then(function (wordChain) {

@@ -25,9 +25,7 @@ WordChainLoader.prototype.updateFromConfig = function (config) {
 WordChainLoader.prototype.load = function () {
 	var self = this;
 	if (this.wordChain) {
-		return new Promise(function (resolve, reject) {
-			resolve(self.wordChain);
-		});
+		return Promise.resolve(self.wordChain);
 	}
 	return this.filteredSourceWordsLoader.load()
 		.then(function (filteredSourceWords) {
