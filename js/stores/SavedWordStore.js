@@ -1,95 +1,70 @@
+var Reflux = require('reflux');
+var savedWordsActions = require('../actions/actions').savedWordsActions;
+var _ = require('lodash');
 var ls = require('easy-localstorage');
 
-var words;
+var idCounter = 0;
 
-init();
+module.exports = Reflux.createStore({
+	listenables: savedWordsActions,
 
-function init() {
-	var savedWords = ls.get('saved-words');
-	words = savedWords ? savedWords : [];
-}
+	init: function () {
+		var localStorageList = ls.get('saved-words');
+		if (localStorageList) {
+			this.list = _.map(localStorageList, function (item) {
+				//reset keys
+				item.key = ++idCounter;
+				return item;
+			});
+		} else {
+			this.list = [];
+		}
+	},
+	getInitialState: function () {
+		return this.list;
+	},
 
-function add(word) {
-	var i = words.indexOf(word);
-	if (i >= 0) {
-		return false;
+	updateList: function (list) {
+		ls.set('saved-words', list);
+		this.list = list;
+		this.trigger(list);
+	},
+	updateListIfSizeChanged: function (list) {
+		if (list.length == this.list.length) {
+			return;
+		}
+		this.updateList(list);
+	},
+
+	listDoesNotContain: function (word) {
+		return _.findIndex(this.list, function (item) {
+				return item.word == word;
+			}) < 0;
+	},
+
+	onAdd: function (words) {
+		if (!_.isArray(words)) {
+			words = [words];
+		}
+		words = words.filter(this.listDoesNotContain);
+		if (words.length <= 0) {
+			return;
+		}
+		this.updateListIfSizeChanged(this.list.concat(words.map(function (word) {
+			return {
+				key: ++idCounter,
+				word: word
+			};
+		})));
+	},
+
+	onRemove: function (word) {
+		this.updateListIfSizeChanged(_.filter(this.list, function (item) {
+			return item.word !== word;
+		}));
+	},
+
+	onClear: function () {
+		this.updateListIfSizeChanged([]);
 	}
-	words.push(word);
-	return true;
-}
-
-function remove(word) {
-	var i = words.indexOf(word);
-	if (i < 0) {
-		return false;
-	}
-	words.splice(i, 1);
-	return true;
-}
-
-function onChange() {
-	saveToLocalStorage();
-	emitChange();
-}
-
-function saveToLocalStorage() {
-	ls.set('saved-words', words);
-}
-
-module.exports.getAll = function () {
-	return words;
-};
-
-module.exports.has = function (word) {
-	return words.indexOf(word) >= 0;
-};
-
-module.exports.add = function (word) {
-	if (add(word)) {
-		onChange();
-	}
-};
-
-module.exports.addArray = function (wordArray) {
-	var sizeBefore = words.length;
-	wordArray.forEach(add);
-	if (words.length != sizeBefore) {
-		onChange();
-	}
-};
-
-module.exports.remove = function (word) {
-	if (remove(word)) {
-		onChange();
-	}
-};
-
-module.exports.clear = function () {
-	if (words.length <= 0) {
-		return;
-	}
-	words = [];
-	onChange();
-};
-
-
-//////////////////////////////////////////////////////////
-// Events
-
-var EventEmitter = require('events').EventEmitter;
-
-var CHANGE_EVENT = 'change';
-
-var emitter = new EventEmitter();
-
-function emitChange() {
-	emitter.emit(CHANGE_EVENT);
-}
-
-module.exports.addChangeListener = function (callback) {
-	emitter.on(CHANGE_EVENT, callback);
-};
-
-module.exports.removeChangeListener = function (callback) {
-	emitter.off(CHANGE_EVENT, callback);
-};
+});

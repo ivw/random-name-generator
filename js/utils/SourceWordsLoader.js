@@ -1,4 +1,4 @@
-var Promise = require('promise');
+var Promise = require('native-promise-only');
 var request = require('superagent');
 
 function fixAbsoluteLocalUrl(url) {

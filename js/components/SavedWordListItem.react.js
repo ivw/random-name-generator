@@ -1,11 +1,11 @@
 var React = require('react');
-var SavedWordStore = require('../stores/SavedWordStore');
+var actions = require('../actions/actions');
 
 var SavedWordListItem = React.createClass({
 	handleClick: function (e) {
 		e.preventDefault();
 
-		SavedWordStore.remove(this.props.word);
+		actions.savedWordsActions.remove(this.props.word);
 	},
 	render: function () {
 		var googleLink = "https://www.google.nl/search?q=" + encodeURIComponent(this.props.word);

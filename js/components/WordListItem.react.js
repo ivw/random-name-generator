@@ -1,28 +1,29 @@
 var React = require('react');
 var SavedWordStore = require('../stores/SavedWordStore');
+var actions = require('../actions/actions');
 
 var InfiniteWordListItem = React.createClass({
 	handleSaveButtonClick: function (e) {
 		e.preventDefault();
 
-		SavedWordStore.add(this.props.word);
+		actions.savedWordsActions.add(this.props.word);
 	},
 	handleUnsaveButtonClick: function (e) {
 		e.preventDefault();
 
-		SavedWordStore.remove(this.props.word);
+		actions.savedWordsActions.remove(this.props.word);
 	},
 	renderSaveButton: function () {
-		if (SavedWordStore.has(this.props.word)) {
+		if (SavedWordStore.listDoesNotContain(this.props.word)) {
 			return (
-				<a href="javascript:;" onClick={this.handleUnsaveButtonClick}>
-					<i className="fa fa-star"></i>
+				<a href="javascript:;" onClick={this.handleSaveButtonClick}>
+					<i className="fa fa-star-o"></i>
 				</a>
 			);
 		}
 		return (
-			<a href="javascript:;" onClick={this.handleSaveButtonClick}>
-				<i className="fa fa-star-o"></i>
+			<a href="javascript:;" onClick={this.handleUnsaveButtonClick}>
+				<i className="fa fa-star"></i>
 			</a>
 		);
 	},

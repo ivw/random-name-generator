@@ -1,9 +1,11 @@
 var React = require('react');
+var Reflux = require('reflux');
 var InfiniteScroll = require('react-infinite-scroll')(React);
 var WordListItem = require('./WordListItem.react.js');
 var GeneratedWordStore = require('../stores/GeneratedWordStore');
 var SavedWordStore = require('../stores/SavedWordStore');
 var WordGeneratorStore = require('../stores/WordGeneratorStore');
+var actions = require('../actions/actions');
 
 function loadMore() {
 	console.log('loadMore');
@@ -12,28 +14,30 @@ function loadMore() {
 	if (generatedWords.length <= 0) {
 		return;
 	}
-	GeneratedWordStore.addArray(generatedWords);
+	actions.generatedWordsActions.add(generatedWords);
 }
 
-function getWordListItem(word) {
+function getWordListItem(item) {
 	return (
 		<WordListItem
-			key={word}
-			word={word}
+			key={item.key}
+			word={item.word}
 		/>
 	);
 }
 
 var InfiniteWordList = React.createClass({
+	mixins: [Reflux.ListenerMixin],
+	//TODO Reflux.listenToMany
 	getInitialState: function () {
 		return {
-			items: GeneratedWordStore.getAll(),
+			items: GeneratedWordStore.list,
 			hasMore: !!WordGeneratorStore.getWordGenerator()
 		};
 	},
 	_onWordsChange: function () {
 		this.setState({
-			items: GeneratedWordStore.getAll()
+			items: GeneratedWordStore.list
 		});
 	},
 	_onWordGeneratorChange: function () {
@@ -42,13 +46,11 @@ var InfiniteWordList = React.createClass({
 		});
 	},
 	componentDidMount: function () {
-		GeneratedWordStore.addChangeListener(this._onWordsChange);
-		SavedWordStore.addChangeListener(this._onWordsChange);
+		this.listenTo(GeneratedWordStore, this._onWordsChange);
+		this.listenTo(SavedWordStore, this._onWordsChange);
 		WordGeneratorStore.addWordGeneratorChangeListener(this._onWordGeneratorChange);
 	},
 	componentWillUnmount: function () {
-		GeneratedWordStore.removeChangeListener(this._onWordsChange);
-		SavedWordStore.removeChangeListener(this._onWordsChange);
 		WordGeneratorStore.removeWordGeneratorChangeListener(this._onWordGeneratorChange);
 	},
 	render: function () {
@@ -60,7 +62,9 @@ var InfiniteWordList = React.createClass({
 							pageStart={0}
 							loadMore={loadMore}
 							hasMore={this.state.hasMore}
-							loader={<div className="infinite-list-end"><em>Can't generate any more words with the current settings</em></div>}
+							loader={<div className="infinite-list-end">
+								<em>Can't generate any more words with the current settings</em>
+							</div>}
 						>{this.state.items.map(getWordListItem)}</InfiniteScroll>
 					</div>
 				</div>

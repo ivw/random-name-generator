@@ -1,4 +1,4 @@
-var Promise = require('promise');
+var Promise = require('native-promise-only');
 var _ = require('lodash');
 var SourceWordsLoader = require('./SourceWordsLoader');
 

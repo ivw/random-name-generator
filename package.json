@@ -5,14 +5,15 @@
   "main": "js/app.js",
   "dependencies": {
     "easy-localstorage": "^0.1.0",
-    "events": "^1.0.2",
     "foswig": "^1.1.1",
-    "lodash": "^3.3.0",
-    "promise": "^6.1.0",
+    "immutable": "^3.6.2",
+    "lodash": "^3.3.1",
+    "native-promise-only": "^0.7.6-a",
     "react": "^0.12.2",
     "react-bootstrap": "^0.15.1",
     "react-infinite-scroll": "^0.1.5",
     "react-loader": "^1.1.0",
+    "reflux": "^0.2.5",
     "superagent": "^0.21.0"
   },
   "devDependencies": {

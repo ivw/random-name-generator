@@ -1,37 +1,19 @@
 var React = require('react');
+var Reflux = require('reflux');
 var SavedWordListItem = require('./SavedWordListItem.react.js');
 var SavedWordStore = require('../stores/SavedWordStore');
-var _ = require('lodash');
 
-
-function getState() {
-	return {
-		items: SavedWordStore.getAll()
-	};
-}
-
-function getSavedWordListItem(word) {
+function getSavedWordListItem(item) {
 	return (
 		<SavedWordListItem
-			key={word}
-			word={word}
+			key={item.key}
+			word={item.word}
 		/>
 	);
 }
 
 var SavedWordList = React.createClass({
-	getInitialState: function () {
-		return getState();
-	},
-	_onChange: function () {
-		this.setState(getState());
-	},
-	componentDidMount: function () {
-		SavedWordStore.addChangeListener(this._onChange);
-	},
-	componentWillUnmount: function () {
-		SavedWordStore.removeChangeListener(this._onChange);
-	},
+	mixins: [Reflux.connect(SavedWordStore, "items")],
 	render: function () {
 		if (this.state.items.length <= 0) {
 			return null;

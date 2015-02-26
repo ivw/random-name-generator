@@ -1,4 +1,4 @@
-var Promise = require('promise');
+var Promise = require('native-promise-only');
 var _ = require('lodash');
 var Foswig = require('foswig');
 var FilteredSourceWordsLoader = require('./FilteredSourceWordsLoader');
