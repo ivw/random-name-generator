@@ -1,7 +1,16 @@
 {
   "name": "random-name-generator",
   "description": "A nice user interface for generating random words or names using a markov chain. Built in React.js. http://ivw.github.io/random-name-generator/",
-  "author": "ivw",
+  "author": "Ivo Wijnker",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivw/random-name-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ivw/random-name-generator/issues"
+  },
+  "homepage": "https://github.com/ivw/random-name-generator",
   "main": "js/app.js",
   "dependencies": {
     "easy-localstorage": "^0.1.0",
