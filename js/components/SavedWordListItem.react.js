@@ -8,7 +8,7 @@ var SavedWordListItem = React.createClass({
 		actions.savedWordsActions.remove(this.props.word);
 	},
 	render: function () {
-		var googleLink = "https://www.google.nl/search?q=" + encodeURIComponent(this.props.word);
+		var googleLink = "https://www.google.nl/search?q=" + encodeURIComponent('"' + this.props.word + '"');
 		return (
 			<div className="word-list-item">
 				{this.props.word}
