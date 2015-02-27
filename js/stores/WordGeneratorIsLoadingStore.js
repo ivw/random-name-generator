@@ -2,20 +2,19 @@ var Reflux = require('reflux');
 var wordGeneratorActions = require('../actions/actions').wordGeneratorActions;
 
 module.exports = Reflux.createStore({
-	init: function () {
-		this.listenTo(wordGeneratorActions.updateConfig, 'onUpdateConfig');
-		this.listenTo(wordGeneratorActions.updateConfig.completed, 'onUpdateConfigCompleted');
-		this.listenTo(wordGeneratorActions.updateConfig.failed, 'onUpdateConfigFailed');
+	listenables: wordGeneratorActions,
 
+	init: function () {
 		this.isLoading = false;
+	},
+	getInitialState: function () {
+		return this.isLoading;
 	},
 	updateState: function (isLoading) {
 		this.isLoading = isLoading;
 		this.trigger(isLoading);
 	},
-	getInitialState: function () {
-		return this.isLoading;
-	},
+
 	onUpdateConfig: function (newConfig) {
 		this.updateState(true);
 	},
