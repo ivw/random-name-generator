@@ -1,33 +1,25 @@
 var React = require('react');
+var Reflux = require('reflux');
 var WordGeneratorStore = require('../stores/WordGeneratorStore');
+var WordGeneratorIsLoadingStore = require('../stores/WordGeneratorIsLoadingStore');
 var _ = require('lodash');
 var actions = require('../actions/actions');
 
 
 var WordGeneratorConfig = React.createClass({
+	mixins: [
+		Reflux.listenTo(WordGeneratorStore, "onWordGeneratorChange"),
+		Reflux.connect(WordGeneratorIsLoadingStore, "isLoading")
+	],
 	getInitialState: function () {
 		return {
-			config: WordGeneratorStore.getConfig(),
-			isLoading: WordGeneratorStore.isLoading()
+			config: WordGeneratorStore.getConfig()
 		};
 	},
-	_onWordGeneratorChange: function () {
+	onWordGeneratorChange: function () {
 		this.setState({
 			config: WordGeneratorStore.getConfig()
 		});
-	},
-	_onLoadChange: function () {
-		this.setState({
-			isLoading: WordGeneratorStore.isLoading()
-		});
-	},
-	componentDidMount: function () {
-		WordGeneratorStore.addWordGeneratorChangeListener(this._onWordGeneratorChange);
-		WordGeneratorStore.addLoadChangeListener(this._onLoadChange);
-	},
-	componentWillUnmount: function () {
-		WordGeneratorStore.removeWordGeneratorChangeListener(this._onWordGeneratorChange);
-		WordGeneratorStore.removeLoadChangeListener(this._onLoadChange);
 	},
 	handleChangeSourceWordsUrl: function (e) {
 		if (this.state.isLoading) {
@@ -68,8 +60,8 @@ var WordGeneratorConfig = React.createClass({
 		e.preventDefault();
 
 		try {
-			WordGeneratorStore.updateConfig(this.state.config)
-				.then(function (wordGenerator) {
+			actions.wordGeneratorActions.updateConfig.triggerPromise(this.state.config)
+				.then(function () {
 					actions.generatedWordsActions.clear();
 				})
 				.catch(function (error) {

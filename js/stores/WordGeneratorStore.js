@@ -1,113 +1,60 @@
+var Reflux = require('reflux');
+var wordGeneratorActions = require('../actions/actions').wordGeneratorActions;
 var WordGeneratorLoader = require('../utils/WordGeneratorLoader');
-var _ = require('lodash');
+var Promise = require('native-promise-only');
 
-var defaultConfig = {
-	sourceWordsUrl: '/wordlists/wordsEnglish.txt',
-	wordStartsWith: null,
-	chainOrder: 3,
-	minWordLength: 4,
-	maxWordLength: 7
-};
 
-// We save the loader so we can use its updateFromConfig method which can reuse its subcomponents if their config is the same.
-// This can be a lot faster than making a whole loader from scratch every time with fromConfig
-var wordGeneratorLoader = null;
+module.exports = Reflux.createStore({
+	listenables: wordGeneratorActions,
 
-var wordGenerator = null;
+	init: function () {
+		this.defaultConfig = {
+			sourceWordsUrl: '/wordlists/wordsEnglish.txt',
+			wordStartsWith: null,
+			chainOrder: 3,
+			minWordLength: 4,
+			maxWordLength: 7
+		};
+		this.wordGeneratorLoader = null;
+		this.wordGenerator = null;
+	},
+	getInitialState: function () {
+		return this.wordGenerator;
+	},
+	getConfig: function () {
+		if (!this.wordGeneratorLoader) {
+			return null;
+		}
+		return this.wordGeneratorLoader.getConfig();
+	},
 
-var isLoading = false;
+	onUpdateConfig: function (newConfig) {
+		var action = wordGeneratorActions.updateConfig;
 
-function updateConfig(newConfig) {
-	if (isLoading) {
-		throw new Error("Can't update the config while it's loading");
+		var newWordGeneratorLoader = this.wordGeneratorLoader ? this.wordGeneratorLoader.updateFromConfig(newConfig) : WordGeneratorLoader.fromConfig(newConfig);
+		if (newWordGeneratorLoader == this.wordGeneratorLoader) {
+			action.promise(Promise.resolve(this.wordGeneratorLoader));
+		}
+
+		/*// causes false positive error:
+		 action.promise(Promise.resolve(newWordGeneratorLoader.load()).then(function (newWordGenerator) {
+		 return newWordGeneratorLoader;
+		 }));*/
+
+		newWordGeneratorLoader.load()
+			.then(function (newWordGenerator) {
+				action.completed(newWordGeneratorLoader);
+			})
+			.catch(action.failed);
+	},
+
+	onUpdateConfigCompleted: function (newWordGeneratorLoader) {
+		if (newWordGeneratorLoader == this.wordGeneratorLoader) {
+			return;
+		}
+		this.wordGeneratorLoader = newWordGeneratorLoader;
+		this.wordGenerator = this.wordGeneratorLoader.wordGenerator;
+		this.trigger(this.wordGenerator);
 	}
 
-	var newWordGeneratorLoader = wordGeneratorLoader ? wordGeneratorLoader.updateFromConfig(newConfig) : WordGeneratorLoader.fromConfig(newConfig);
-	if (newWordGeneratorLoader == wordGeneratorLoader) {
-		return new Promise(function (resolve, reject) {
-			resolve(wordGenerator);
-		});
-	}
-
-	isLoading = true;
-	emitLoadChange();
-
-	return newWordGeneratorLoader.load()
-		.then(function (newWordGenerator) {
-			isLoading = false;
-			emitLoadChange();
-
-			wordGeneratorLoader = newWordGeneratorLoader;
-			wordGenerator = newWordGenerator;
-			emitWordGeneratorChange();
-		})
-		.catch(function (error) {
-			isLoading = false;
-			emitLoadChange();
-
-			throw error;
-		});
-}
-
-
-module.exports.init = function () {
-	//TODO config localStorage
-	return updateConfig(_.assign({}, defaultConfig));
-};
-
-module.exports.updateConfig = updateConfig;
-
-module.exports.getConfig = function () {
-	if (!wordGeneratorLoader) {
-		return null;
-	}
-	return wordGeneratorLoader.getConfig();
-};
-
-module.exports.getWordGenerator = function () {
-	return wordGenerator;
-};
-
-module.exports.isLoading = function () {
-	return isLoading;
-};
-
-
-//////////////////////////////////////////////////////////
-// Events
-
-var EventEmitter = require('events').EventEmitter;
-
-var emitter = new EventEmitter();
-
-
-var LOAD_CHANGE_EVENT = 'loadChange';
-
-function emitLoadChange() {
-	console.log(LOAD_CHANGE_EVENT);
-	emitter.emit(LOAD_CHANGE_EVENT);
-}
-
-module.exports.addLoadChangeListener = function (callback) {
-	emitter.on(LOAD_CHANGE_EVENT, callback);
-};
-
-module.exports.removeLoadChangeListener = function (callback) {
-	emitter.off(LOAD_CHANGE_EVENT, callback);
-};
-
-
-var WORD_GENERATOR_CHANGE_EVENT = 'wordGeneratorChange';
-
-function emitWordGeneratorChange() {
-	console.log(WORD_GENERATOR_CHANGE_EVENT);
-	emitter.emit(WORD_GENERATOR_CHANGE_EVENT);
-}
-
-module.exports.addWordGeneratorChangeListener = function (callback) {
-	emitter.on(WORD_GENERATOR_CHANGE_EVENT, callback);
-};
-
-module.exports.removeWordGeneratorChangeListener = function (callback) {
-	emitter.off(WORD_GENERATOR_CHANGE_EVENT, callback);
-};
+});

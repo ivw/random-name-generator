@@ -10,7 +10,7 @@ var actions = require('../actions/actions');
 function loadMore() {
 	console.log('loadMore');
 
-	var generatedWords = WordGeneratorStore.getWordGenerator().generateWords(25);
+	var generatedWords = WordGeneratorStore.wordGenerator.generateWords(25);
 	if (generatedWords.length <= 0) {
 		return;
 	}
@@ -27,31 +27,26 @@ function getWordListItem(item) {
 }
 
 var InfiniteWordList = React.createClass({
-	mixins: [Reflux.ListenerMixin],
-	//TODO Reflux.listenToMany
+	mixins: [
+		Reflux.listenTo(GeneratedWordStore, "onWordsChange"),
+		Reflux.listenTo(SavedWordStore, "onWordsChange"),
+		Reflux.listenTo(WordGeneratorStore, "onWordGeneratorChange")
+	],
 	getInitialState: function () {
 		return {
 			items: GeneratedWordStore.list,
-			hasMore: !!WordGeneratorStore.getWordGenerator()
+			hasMore: !!WordGeneratorStore.wordGenerator
 		};
 	},
-	_onWordsChange: function () {
+	onWordsChange: function () {
 		this.setState({
 			items: GeneratedWordStore.list
 		});
 	},
-	_onWordGeneratorChange: function () {
+	onWordGeneratorChange: function () {
 		this.setState({
-			hasMore: !!WordGeneratorStore.getWordGenerator()
+			hasMore: !!WordGeneratorStore.wordGenerator
 		});
-	},
-	componentDidMount: function () {
-		this.listenTo(GeneratedWordStore, this._onWordsChange);
-		this.listenTo(SavedWordStore, this._onWordsChange);
-		WordGeneratorStore.addWordGeneratorChangeListener(this._onWordGeneratorChange);
-	},
-	componentWillUnmount: function () {
-		WordGeneratorStore.removeWordGeneratorChangeListener(this._onWordGeneratorChange);
 	},
 	render: function () {
 		return (
