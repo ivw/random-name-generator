@@ -11,9 +11,9 @@ module.exports = Reflux.createStore({
 		this.defaultConfig = {
 			sourceWordsUrl: '/wordlists/wordsEnglish.txt',
 			wordStartsWith: null,
-			chainOrder: 3,
-			minWordLength: 4,
-			maxWordLength: 7
+			chainOrder: '3',
+			minWordLength: '4',
+			maxWordLength: '7'
 		};
 		this.wordGeneratorLoader = null;
 		this.wordGenerator = null;

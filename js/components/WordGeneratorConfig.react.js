@@ -1,7 +1,6 @@
-var React = require('react');
+var React = require('react/addons');
 var Reflux = require('reflux');
 var WordGeneratorStore = require('../stores/WordGeneratorStore');
-var WordGeneratorIsLoadingStore = require('../stores/WordGeneratorIsLoadingStore');
 var _ = require('lodash');
 var actions = require('../actions/actions');
 
@@ -9,58 +8,19 @@ var actions = require('../actions/actions');
 var WordGeneratorConfig = React.createClass({
 	mixins: [
 		Reflux.listenTo(WordGeneratorStore, "onWordGeneratorChange"),
-		Reflux.connect(WordGeneratorIsLoadingStore, "isLoading")
+		React.addons.LinkedStateMixin
 	],
 	getInitialState: function () {
-		return {
-			config: WordGeneratorStore.getConfig()
-		};
+		return WordGeneratorStore.getConfig() || WordGeneratorStore.defaultConfig;
 	},
 	onWordGeneratorChange: function () {
-		this.setState({
-			config: WordGeneratorStore.getConfig()
-		});
-	},
-	handleChangeSourceWordsUrl: function (e) {
-		if (this.state.isLoading) {
-			return;
-		}
-		var newConfig = _.assign({}, this.state.config, {sourceWordsUrl: e.target.value});
-		this.setState({config: newConfig});
-	},
-	handleChangeWordStartsWith: function (e) {
-		if (this.state.isLoading) {
-			return;
-		}
-		var newConfig = _.assign({}, this.state.config, {wordStartsWith: e.target.value});
-		this.setState({config: newConfig});
-	},
-	handleChangeChainOrder: function (e) {
-		if (this.state.isLoading) {
-			return;
-		}
-		var newConfig = _.assign({}, this.state.config, {chainOrder: parseInt(e.target.value)});
-		this.setState({config: newConfig});
-	},
-	handleChangeMinWordLength: function (e) {
-		if (this.state.isLoading) {
-			return;
-		}
-		var newConfig = _.assign({}, this.state.config, {minWordLength: parseInt(e.target.value)});
-		this.setState({config: newConfig});
-	},
-	handleChangeMaxWordLength: function (e) {
-		if (this.state.isLoading) {
-			return;
-		}
-		var newConfig = _.assign({}, this.state.config, {maxWordLength: parseInt(e.target.value)});
-		this.setState({config: newConfig});
+		this.setState(WordGeneratorStore.getConfig());
 	},
 	handleSubmit: function (e) {
 		e.preventDefault();
 
 		try {
-			actions.wordGeneratorActions.updateConfig.triggerPromise(this.state.config)
+			actions.wordGeneratorActions.updateConfig.triggerPromise(this.state)
 				.then(function () {
 					actions.generatedWordsActions.clear();
 				})
@@ -82,12 +42,10 @@ var WordGeneratorConfig = React.createClass({
 	handleCancel: function (e) {
 		e.preventDefault();
 
-		this.setState({
-			config: WordGeneratorStore.getConfig()
-		});
+		this.setState(WordGeneratorStore.getConfig());
 	},
 	render: function () {
-		var isConfigUnchanged = _.isEqual(this.state.config, WordGeneratorStore.getConfig());
+		var isConfigUnchanged = _.isEqual(this.state, WordGeneratorStore.getConfig());
 
 		return (
 			<div className="row">
@@ -96,7 +54,7 @@ var WordGeneratorConfig = React.createClass({
 						<form className="form-inline" onSubmit={this.handleSubmit}>
 							<div className="form-group">
 								<label>Source words:</label>
-								<select className="form-control" value={this.state.config ? this.state.config.sourceWordsUrl : null} onChange={this.handleChangeSourceWordsUrl}>
+								<select className="form-control" valueLink={this.linkState('sourceWordsUrl')}>
 									<option value="/wordlists/wordsEnglish.txt">English</option>
 									<option value="/wordlists/wordsSpanish.txt">Spanish</option>
 									<option value="/wordlists/wordsFrench.txt">French</option>
@@ -109,12 +67,12 @@ var WordGeneratorConfig = React.createClass({
 
 							<div className="form-group">
 								<label>Starts with:</label>
-								<input type="text" className="form-control input-tiny" size="2" value={this.state.config ? this.state.config.wordStartsWith : null} onChange={this.handleChangeWordStartsWith} />
+								<input type="text" className="form-control input-tiny" size="2" valueLink={this.linkState('wordStartsWith')} />
 							</div>
 
 							<div className="form-group">
 								<label>Randomness:</label>
-								<select className="form-control" value={this.state.config ? this.state.config.chainOrder : null} onChange={this.handleChangeChainOrder}>
+								<select className="form-control" valueLink={this.linkState('chainOrder')}>
 									<option value="1">1 (more random)</option>
 									<option value="2">2</option>
 									<option value="3">3</option>
@@ -126,11 +84,11 @@ var WordGeneratorConfig = React.createClass({
 								<label>Length:</label>
 
 								<div className="input-group input-medium">
-									<input type="number" className="form-control" min="1" max="50" value={this.state.config ? this.state.config.minWordLength : null} onChange={this.handleChangeMinWordLength} />
+									<input type="number" className="form-control" min="1" max="50" valueLink={this.linkState('minWordLength')} />
 
 									<div className="input-group-addon">-</div>
 
-									<input type="number" className="form-control" min="1" max="50" value={this.state.config ? this.state.config.maxWordLength : null} onChange={this.handleChangeMaxWordLength} />
+									<input type="number" className="form-control" min="1" max="50" valueLink={this.linkState('maxWordLength')} />
 								</div>
 							</div>
 
